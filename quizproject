@@ -1,0 +1,276 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9999a2b4-b3c0-424e-b561-5e3be7440c8a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "What is the capital of France?\n",
+      "a) Berlin\n",
+      "b) Madrid\n",
+      "c) Paris\n",
+      "d) Rome\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter your answer (a/b/c/d):  c\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ Correct!\n",
+      "\n",
+      "What is 5 + 7?\n",
+      "a) 10\n",
+      "b) 12\n",
+      "c) 14\n",
+      "d) 15\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter your answer (a/b/c/d):  b\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ Correct!\n",
+      "\n",
+      "Which planet is known as the Red Planet?\n",
+      "a) Earth\n",
+      "b) Mars\n",
+      "c) Jupiter\n",
+      "d) Venus\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter your answer (a/b/c/d):  c\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "❌ Wrong! The correct answer was 'b'.\n",
+      "\n",
+      "What is the chemical symbol for water?\n",
+      "a) H2O\n",
+      "b) CO2\n",
+      "c) O2\n",
+      "d) CH4\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter your answer (a/b/c/d):  a\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ Correct!\n",
+      "\n",
+      "Who wrote \"Hamlet\"?\n",
+      "a) Charles Dickens\n",
+      "b) William Shakespeare\n",
+      "c) Jane Austen\n",
+      "d) Mark Twain\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter your answer (a/b/c/d):  s\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Invalid input! Please enter only 'a', 'b', 'c', or 'd'.\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter your answer (a/b/c/d):  a\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "❌ Wrong! The correct answer was 'b'.\n",
+      "\n",
+      "What is the largest ocean on Earth?\n",
+      "a) Atlantic Ocean\n",
+      "b) Indian Ocean\n",
+      "c) Arctic Ocean\n",
+      "d) Pacific Ocean\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter your answer (a/b/c/d):  d\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ Correct!\n",
+      "\n",
+      "What is the square root of 64?\n",
+      "a) 6\n",
+      "b) 7\n",
+      "c) 8\n",
+      "d) 9\n"
+     ]
+    },
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "Enter your answer (a/b/c/d):  c\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ Correct!\n",
+      "\n",
+      "Which gas do plants absorb during photosynthesis?\n",
+      "a) Oxygen\n",
+      "b) Nitrogen\n",
+      "c) Carbon dioxide\n",
+      "d) Hydrogen\n"
+     ]
+    }
+   ],
+   "source": [
+    "import os\n",
+    "\n",
+    "def load_quiz(filepath):\n",
+    "    \"\"\"Load quiz questions from a text file.\"\"\"\n",
+    "    if not os.path.exists(filepath):\n",
+    "        print(f\"Error: File not found at {filepath}\")\n",
+    "        return []\n",
+    "\n",
+    "    try:\n",
+    "        with open(filepath, 'r', encoding='utf-8') as file:\n",
+    "            lines = [line.strip() for line in file if line.strip()]  # Remove empty lines\n",
+    "\n",
+    "        questions = []\n",
+    "        i = 0\n",
+    "        while i < len(lines) - 5:  # Ensure there are enough lines for a question block\n",
+    "            question = lines[i]\n",
+    "            options = [lines[i+1], lines[i+2], lines[i+3], lines[i+4]]\n",
+    "            answer = lines[i+5].lower()  # Ensure lowercase answer\n",
+    "            if answer not in ['a', 'b', 'c', 'd']:\n",
+    "                print(f\"Warning: Invalid answer '{answer}' in file. Skipping question: {question}\")\n",
+    "                i += 6\n",
+    "                continue  # Skip malformed questions\n",
+    "            \n",
+    "            questions.append((question, options, answer))\n",
+    "            i += 6  # Move to next question block\n",
+    "\n",
+    "        return questions\n",
+    "\n",
+    "    except Exception as e:\n",
+    "        print(f\"Error reading the file: {e}\")\n",
+    "        return []\n",
+    "\n",
+    "def run_quiz(questions):\n",
+    "    \"\"\"Run the quiz and collect user responses.\"\"\"\n",
+    "    if not questions:\n",
+    "        print(\"No valid questions available to run the quiz.\")\n",
+    "        return\n",
+    "\n",
+    "    score = 0\n",
+    "    total = len(questions)\n",
+    "\n",
+    "    for q, opts, ans in questions:\n",
+    "        print(\"\\n\" + q)\n",
+    "        for opt in opts:\n",
+    "            print(opt)\n",
+    "\n",
+    "        while True:\n",
+    "            user_ans = input(\"Enter your answer (a/b/c/d): \").strip().lower()\n",
+    "            if user_ans in ['a', 'b', 'c', 'd']:\n",
+    "                break\n",
+    "            print(\"Invalid input! Please enter only 'a', 'b', 'c', or 'd'.\")\n",
+    "\n",
+    "        if user_ans == ans:\n",
+    "            print(\"✅ Correct!\")\n",
+    "            score += 1\n",
+    "        else:\n",
+    "            print(f\"❌ Wrong! The correct answer was '{ans}'.\")\n",
+    "\n",
+    "    print(f\"\\nYour final score: {score}/{total} ({(score/total)*100:.2f}%)\")\n",
+    "\n",
+    "# Path to your quiz file\n",
+    "file_path = r\"C:\\Users\\prava\\What is the capital of France.txt\"\n",
+    "\n",
+    "# Load and run the quiz\n",
+    "quiz_questions = load_quiz(file_path)\n",
+    "run_quiz(quiz_questions)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "773f305a-6d1f-4924-a561-e37a0e5cf6f8",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
